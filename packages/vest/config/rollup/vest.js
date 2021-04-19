@@ -3,7 +3,7 @@ const { packageDist, packageNames } = require('../../../../util');
 
 export default genConfig({
   distPath: packageDist(packageNames.VEST),
-  esInput: 'vest.mjs.js',
-  input: 'vest.js',
+  // esInput: 'vest.mjs.js',
+  input: 'vest.ts',
   libraryName: packageNames.VEST,
 });

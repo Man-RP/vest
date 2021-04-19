@@ -11,24 +11,25 @@ const {
 } = require('../../../../util');
 
 const config = glob
-  .sync('./*.js', {
+  .sync('./*.ts', {
     cwd: packagePath(packageNames.ANYONE, filePaths.DIR_NAME_SRC),
     absolute: true,
   })
   .reduce(
-    (configs, file) =>
-      configs.concat(
+    (configs, file) => {
+      return configs.concat(
         genConfig({
           distPath: packageDist(packageNames.ANYONE),
           input: path.basename(file),
-          libraryName: path.basename(file, '.js'),
+          libraryName: path.basename(file, '.ts'),
           packageName: packageNames.ANYONE,
         })
-      ),
+      );
+    },
     [
       ...genConfig({
         distPath: packageDist(packageNames.ANYONE),
-        input: 'anyone',
+        input: 'anyone.ts',
         libraryName: 'anyone',
         packageName: packageNames.ANYONE,
       }),

@@ -4,12 +4,13 @@ const glob = require('glob');
 
 const { ROOT_PATH } = require('./filePaths');
 
-const matches = glob.sync('./packages/*/src/**/*.{m,js}', {
+const matches = glob.sync('./packages/*/src/**/*.+({m,js}|ts)', {
   cwd: ROOT_PATH,
   absolute: false,
   ignore: [
     './packages/*/src/**/index.{m,js}',
     './packages/*/src/**/*.{test,spec}.{m,js}',
+    './packages/*/src/**/*.d.ts',
   ],
 });
 
@@ -34,7 +35,8 @@ if (duplicates.size > 0) {
 }
 
 module.exports = matches.reduce((accumulator, relative) => {
-  const name = path.basename(relative, '.js');
+  const ext = path.extname(relative);
+  const name = path.basename(relative, ext);
 
   return accumulator.concat({
     name,

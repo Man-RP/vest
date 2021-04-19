@@ -5,6 +5,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const { default: resolve } = require('@rollup/plugin-node-resolve');
 const replace = require('@rollup/plugin-replace');
 const { terser } = require('rollup-plugin-terser');
+const typescript = require('rollup-plugin-typescript2');
 
 const { moduleAliases, filePaths } = require('../../util');
 
@@ -36,15 +37,16 @@ module.exports = function ({ dev = false, format, min, libraryName, version }) {
     commonjs({
       include: /node_modules\/(anyone|n4s|wait|context)/,
     }),
-    babel({
-      configFile: filePaths.BABEL_CONFIG_PATH,
-      babelHelpers: 'bundled',
-      envName,
-    }),
     replace({
       __LIB_VERSION__: JSON.stringify(version),
       LIBRARY_NAME: JSON.stringify(libraryName),
       __DEV__: dev === true,
+    }),
+    typescript(),
+    babel({
+      configFile: filePaths.BABEL_CONFIG_PATH,
+      babelHelpers: 'bundled',
+      envName,
     }),
   ];
 

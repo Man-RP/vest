@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "baseUrl": ".",
+    "declaration": false,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": false,
+    "isolatedModules": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitAny": true,
     "paths": {
       "asArray": ["./packages/__shared/src/asArray.ts"],
       "hasOwnProperty": ["./packages/__shared/src/hasOwnProperty.ts"],
@@ -146,7 +156,12 @@
       "schema": ["./packages/vest/src/utilities/schema.js"],
       "vest.mjs": ["./packages/vest/src/vest.mjs.js"],
       "vest": ["./packages/vest/src/vest.ts"]
-    }
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es5"
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "__tests__"],
+  "include": ["./packages/*/src/**/*"]
 }

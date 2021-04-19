@@ -16,7 +16,7 @@ const newPaths = moduleAliases.reduce(
 const shouldReWrite = findDifference(existingPaths, newPaths);
 
 if (shouldReWrite) {
-  const config = {
+  const configJS = {
     compilerOptions: {
       baseUrl: '.',
       paths: newPaths,
@@ -24,13 +24,42 @@ if (shouldReWrite) {
     exclude: ['node_modules', filePaths.DIR_NAME_DIST],
   };
 
+  const configTS = {
+    compilerOptions: {
+      allowJs: true,
+      baseUrl: '.',
+      declaration: false,
+      downlevelIteration: true,
+      esModuleInterop: true,
+      forceConsistentCasingInFileNames: false,
+      isolatedModules: true,
+      module: 'esnext',
+      moduleResolution: 'node',
+      noEmit: true,
+      noImplicitAny: true,
+      paths: newPaths,
+      resolveJsonModule: true,
+      skipLibCheck: true,
+      strict: true,
+      target: 'es5',
+    },
+    exclude: ['node_modules', 'dist', '__tests__'],
+    include: ['./packages/*/src/**/*'],
+  };
+
   fs.writeFileSync(
     path.join(filePaths.ROOT_PATH, 'jsconfig.json'),
-    JSON.stringify(config, null, 2),
+    JSON.stringify(configJS, null, 2),
     'utf8'
   );
 
-  exec(`yarn prettier ./jsconfig.json -w`);
+  fs.writeFileSync(
+    path.join(filePaths.ROOT_PATH, 'tsconfig.json'),
+    JSON.stringify(configTS, null, 2),
+    'utf8'
+  );
+
+  exec(`yarn prettier ./tsconfig.json ./jsconfig.json -w`);
 }
 
 function findDifference(current, next) {
