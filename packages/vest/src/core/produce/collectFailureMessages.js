@@ -1,5 +1,6 @@
 import isMatchingSeverityProfile from 'isMatchingSeverityProfile';
 import { useTestObjects } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 
 /**
  * @param {'warn'|'error'} severity   Filter by severity.
@@ -20,7 +21,7 @@ const collectFailureMessages = (severity, options) => {
       return collector;
     }
 
-    if (!testObject.failed) {
+    if (testObject.status !== testStatuses.FAILED) {
       return collector;
     }
 

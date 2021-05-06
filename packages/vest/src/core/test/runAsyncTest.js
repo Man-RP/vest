@@ -4,6 +4,7 @@ import hasRemainingTests from 'hasRemainingTests';
 import isStringValue from 'isStringValue';
 import { removePending } from 'pending';
 import { useTestCallbacks, useTestObjects } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 
 /**
  * Runs async test.
@@ -15,9 +16,12 @@ const runAsyncTest = testObject => {
   const done = context.bind({ stateRef }, () => {
     removePending(testObject);
 
-    // This is for cases in which the suite state was already reset
-    if (testObject.canceled) {
-      return;
+    switch (testObject.status) {
+      // This is for cases in which the suite state was already reset
+      case testStatuses.CANCELLED:
+        return;
+      case testStatuses.PENDING:
+        testObject.status = testStatuses.TESTED;
     }
 
     // Perform required done callback calls and cleanups after the test is finished
@@ -35,6 +39,7 @@ const runAsyncTest = testObject => {
     done();
   });
   try {
+    testObject.setStatus(testStatuses.PENDING);
     asyncTest.then(done, fail);
   } catch (e) {
     fail();

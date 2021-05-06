@@ -6,6 +6,7 @@ import {
   TEST_COUNT,
 } from 'resultKeys';
 import { useSuiteId, useTestObjects, useSkippedTests } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 
 /**
  * Reads the testObjects list and gets full validation result from it.
@@ -73,7 +74,7 @@ export default genTestsSummary;
  * @returns {Object} Test result summary
  */
 const genTestObject = (summaryKey, testObject, skipped) => {
-  const { fieldName, isWarning, failed, statement } = testObject;
+  const { fieldName, isWarning, status, statement } = testObject;
 
   summaryKey[fieldName] = summaryKey[fieldName] || {
     [SEVERITY_COUNT_ERROR]: 0,
@@ -97,7 +98,7 @@ const genTestObject = (summaryKey, testObject, skipped) => {
     }
   };
 
-  if (failed) {
+  if (status === testStatuses.FAILED) {
     if (isWarning) {
       addTo(SEVERITY_COUNT_WARN, SEVERITY_GROUP_WARN);
     } else {

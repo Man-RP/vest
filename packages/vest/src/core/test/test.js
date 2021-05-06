@@ -1,5 +1,6 @@
 import VestTest from 'VestTest';
 import addTestToState from 'addTestToState';
+import * as testStatuses from 'testStatuses';
 import context from 'ctx';
 import { isExcluded } from 'exclusive';
 import isFunction from 'isFunction';
@@ -24,6 +25,7 @@ const sync = testObject =>
     let result;
     try {
       result = testObject.testFn();
+      testObject.status = testStatuses.TESTED;
     } catch (e) {
       if (isUndefined(testObject.statement) && isStringValue(e)) {
         testObject.statement = e;
@@ -85,7 +87,7 @@ function test(fieldName, args) {
   const [, setSkippedTests] = useSkippedTests();
 
   const { groupName } = context.use();
-  const testObject = new VestTest({
+  const testObject = VestTest({
     fieldName,
     group: groupName,
     statement,

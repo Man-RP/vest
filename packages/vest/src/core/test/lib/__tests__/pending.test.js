@@ -7,6 +7,7 @@ import VestTest from 'VestTest';
 import context from 'ctx';
 import { removePending, setPending } from 'pending';
 import { usePending } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 
 const groupName = 'group_name';
 
@@ -25,7 +26,7 @@ describe('module: pending', () => {
   beforeEach(() => {
     stateRef = runCreateRef(state);
     refContent = _.cloneDeep(expandStateRef(stateRef));
-    testObject = new VestTest({
+    testObject = VestTest({
       fieldName: 'field_1',
       statement: 'failure_message',
       testFn: jest.fn(),
@@ -93,14 +94,12 @@ describe('module: pending', () => {
     let testObjects;
 
     beforeEach(() => {
-      testObjects = Array.from(
-        { length: 5 },
-        (v, i) =>
-          new VestTest({
-            fieldName: `test_${i}`,
-            statement: 'Some statement string',
-            testFn: jest.fn(),
-          })
+      testObjects = Array.from({ length: 5 }, (v, i) =>
+        VestTest({
+          fieldName: `test_${i}`,
+          statement: 'Some statement string',
+          testFn: jest.fn(),
+        })
       );
       testObjects[0].groupName = groupName;
     });
@@ -138,7 +137,7 @@ describe('module: pending', () => {
           const [pendingState] = usePending();
           expect(pendingState.lagging).toContain(testObjects[0]);
         }
-        const added = new VestTest({
+        const added = VestTest({
           fieldName: testObjects[0].fieldName,
           group: testObjects[0].groupName,
           statement: 'failure message',
@@ -166,16 +165,16 @@ describe('module: pending', () => {
       });
 
       it.ctx('Should set test as canceled', () => {
-        expect(testObjects[0].canceled).toBeUndefined();
+        expect(testObjects[0].status).not.toBe(testStatuses.CANCELLED);
         setPending(
-          new VestTest({
+          VestTest({
             fieldName: testObjects[0].fieldName,
             group: testObjects[0].groupName,
             statement: 'failure message',
             testFn: jest.fn(),
           })
         );
-        expect(testObjects[0].canceled).toBe(true);
+        expect(testObjects[0].status).toBe(testStatuses.CANCELLED);
       });
     });
   });

@@ -1,5 +1,6 @@
 import isMatchingSeverityProfile from 'isMatchingSeverityProfile';
 import { useTestObjects } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 
 /**
  * Determines whether a certain test profile has failures.
@@ -9,7 +10,7 @@ import { useTestObjects } from 'stateHooks';
  * @returns {Boolean}
  */
 export const hasLogic = (testObject, severityKey, fieldName) => {
-  if (!testObject.failed) {
+  if (testObject.status !== testStatuses.FAILED) {
     return false;
   }
 

@@ -1,4 +1,5 @@
 import asArray from 'asArray';
+import { isArray } from 'isArray';
 import optionalFunctionValue from 'optionalFunctionValue';
 import throwError from 'throwError';
 import withArgs from 'withArgs';
@@ -14,7 +15,7 @@ export default function bindTestEach(test) {
    * @return {VestTest[]}           An array of VestTest instances.
    */
   function each(table) {
-    if (!Array.isArray(table)) {
+    if (!isArray(table)) {
       throwError('test.each: Expected table to be an array.');
     }
 

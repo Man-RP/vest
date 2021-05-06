@@ -10,6 +10,7 @@ import hasRemainingTests from 'hasRemainingTests';
 import { setPending } from 'pending';
 import produce from 'produce';
 import { useTestCallbacks, useTestObjects } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 import vest from 'vest';
 
 const DRAFT_EXCLUDED_METHODS = ['done'];
@@ -71,8 +72,8 @@ describe('module: produce', () => {
       produced = produce();
     });
 
-    collect.collection.forEach(({ fieldName, failed, isWarning }) => {
-      if (failed) {
+    collect.collection.forEach(({ fieldName, status, isWarning }) => {
+      if (status === testStatuses.FAILED) {
         failingFields[fieldName] = true;
       }
 

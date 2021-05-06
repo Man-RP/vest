@@ -1,5 +1,6 @@
 import faker from 'faker';
 
+import * as testStatuses from 'testStatuses';
 import vest, { create, test, enforce } from 'vest';
 
 let testObject;
@@ -24,7 +25,7 @@ describe("Test Vest's `test` function", () => {
             throw new Error();
           });
         })();
-        expect(testObject.failed).toBe(true);
+        expect(testObject.status).toBe(testStatuses.FAILED);
         expect(testObject == false).toBe(true); //eslint-disable-line
       });
 
@@ -32,7 +33,7 @@ describe("Test Vest's `test` function", () => {
         create(faker.random.word(), () => {
           test(faker.random.word(), faker.lorem.sentence(), () => false);
         })();
-        expect(testObject.failed).toBe(true);
+        expect(testObject.status).toBe(testStatuses.FAILED);
         expect(testObject == false).toBe(true); //eslint-disable-line
       });
 
@@ -109,13 +110,13 @@ describe("Test Vest's `test` function", () => {
               faker.lorem.sentence(),
               () =>
                 new Promise((resolve, reject) => {
-                  expect(testObject.failed).toBe(false);
+                  expect(testObject.status).not.toBe(testStatuses.FAILED);
                   setTimeout(reject, 300);
                 })
             );
-            expect(testObject.failed).toBe(false);
+            expect(testObject.status).not.toBe(testStatuses.FAILED);
             setTimeout(() => {
-              expect(testObject.failed).toBe(true);
+              expect(testObject.status).toBe(testStatuses.FAILED);
               done();
             }, 310);
           })();

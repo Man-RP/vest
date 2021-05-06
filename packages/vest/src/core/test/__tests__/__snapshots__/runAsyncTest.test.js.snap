@@ -1,19 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`runAsyncTest: failing State updates Initial state matches snapshot (sanity) 1`] = `
+Object {
+  "optionalFields": Object {},
+  "pending": Object {
+    "lagging": Array [],
+    "pending": Array [
+      Object {
+        "asyncTest": Promise {},
+        "cancel": [Function],
+        "fail": [Function],
+        "fieldName": "field_1",
+        "id": "8",
+        "isWarning": false,
+        "setStatus": [Function],
+        "statement": "some statement string",
+        "status": "untested",
+        "testFn": [Function],
+        "valueOf": [Function],
+        "warn": [Function],
+      },
+    ],
+  },
+  "skippedTests": Array [],
+  "suiteId": Object {
+    "id": 1000,
+    "name": "suite_name",
+  },
+  "testCallbacks": Object {
+    "doneCallbacks": Array [],
+    "fieldCallbacks": Object {
+      "field_1": Array [],
+    },
+  },
+  "testObjects": Array [],
+}
+`;
+
 exports[`runAsyncTest: passing State updates Initial state matches snapshot (sanity) 1`] = `
 Object {
   "optionalFields": Object {},
   "pending": Object {
     "lagging": Array [],
     "pending": Array [
-      VestTest {
+      Object {
         "asyncTest": Promise {},
-        "failed": false,
+        "cancel": [Function],
+        "fail": [Function],
         "fieldName": "field_1",
         "id": "0",
         "isWarning": false,
+        "setStatus": [Function],
         "statement": "some statement string",
+        "status": "untested",
         "testFn": [Function],
+        "valueOf": [Function],
+        "warn": [Function],
       },
     ],
   },

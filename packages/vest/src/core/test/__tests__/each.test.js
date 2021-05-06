@@ -3,6 +3,7 @@ import faker from 'faker';
 import VestTest from 'VestTest';
 import enforce from 'enforce';
 import test from 'test';
+import * as testStatuses from 'testStatuses';
 import vest from 'vest';
 
 let testObjects;
@@ -20,10 +21,8 @@ describe("Test Vest's `test.each` function", () => {
           });
         })();
         expect(testObjects).toHaveLength(2);
-        expect(testObjects[0].failed).toBe(false);
-        expect(testObjects[1].failed).toBe(false);
-        expect(testObjects[0]).toBeInstanceOf(VestTest);
-        expect(testObjects[1]).toBeInstanceOf(VestTest);
+        expect(testObjects[0].status).not.toBe(testStatuses.FAILED);
+        expect(testObjects[1].status).not.toBe(testStatuses.FAILED);
       });
 
       it('Should mark failed tests as such', () => {
@@ -37,9 +36,9 @@ describe("Test Vest's `test.each` function", () => {
           });
         })();
         expect(testObjects).toHaveLength(3);
-        expect(testObjects[0].failed).toBe(false);
-        expect(testObjects[1].failed).toBe(true);
-        expect(testObjects[2].failed).toBe(false);
+        expect(testObjects[0].status).not.toBe(testStatuses.FAILED);
+        expect(testObjects[1].status).toBe(testStatuses.FAILED);
+        expect(testObjects[2].status).not.toBe(testStatuses.FAILED);
       });
 
       it('Should include function message when fail test uses function statement', () => {
@@ -55,7 +54,7 @@ describe("Test Vest's `test.each` function", () => {
           );
         })();
         expect(testObjects).toHaveLength(1);
-        expect(testObjects[0].failed).toBe(true);
+        expect(testObjects[0].status).toBe(testStatuses.FAILED);
         expect(testObjects[0].statement).toBe('5 + 4 != 10');
       });
 
@@ -87,12 +86,12 @@ describe("Test Vest's `test.each` function", () => {
           );
         })();
         expect(testObjects).toHaveLength(3);
-        expect(testObjects[0].failed).toBe(false);
+        expect(testObjects[0].status).not.toBe(testStatuses.FAILED);
         /* Since fieldName is shared between all result, if one fails we expect all to fail */
         expect(res.hasErrors(testObjects[0].fieldName)).toBe(true);
-        expect(testObjects[1].failed).toBe(true);
+        expect(testObjects[1].status).toBe(testStatuses.FAILED);
         expect(res.hasErrors(testObjects[1].fieldName)).toBe(true);
-        expect(testObjects[2].failed).toBe(false);
+        expect(testObjects[2].status).not.toBe(testStatuses.FAILED);
         expect(res.hasErrors(testObjects[2].fieldName)).toBe(true);
       });
 
@@ -107,13 +106,13 @@ describe("Test Vest's `test.each` function", () => {
           );
         })();
         expect(testObjects).toHaveLength(3);
-        expect(testObjects[0].failed).toBe(false);
+        expect(testObjects[0].status).not.toBe(testStatuses.FAILED);
         expect(testObjects[0].fieldName).toBe('field2');
         expect(res.hasErrors(testObjects[0].fieldName)).toBe(false);
-        expect(testObjects[1].failed).toBe(true);
+        expect(testObjects[1].status).toBe(testStatuses.FAILED);
         expect(testObjects[1].fieldName).toBe('field1');
         expect(res.hasErrors(testObjects[1].fieldName)).toBe(true);
-        expect(testObjects[2].failed).toBe(false);
+        expect(testObjects[2].status).not.toBe(testStatuses.FAILED);
         expect(testObjects[2].fieldName).toBe('field3');
         expect(res.hasErrors(testObjects[2].fieldName)).toBe(false);
       });

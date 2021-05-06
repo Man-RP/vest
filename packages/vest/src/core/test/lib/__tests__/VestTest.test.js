@@ -5,6 +5,7 @@ import addTestToState from 'addTestToState';
 import context from 'ctx';
 import { setPending } from 'pending';
 import { usePending, useTestObjects } from 'stateHooks';
+import * as testStatuses from 'testStatuses';
 
 const fieldName = 'unicycle';
 const statement = 'I am Root.';
@@ -17,7 +18,7 @@ describe('VestTest', () => {
   let testObject;
 
   beforeEach(() => {
-    testObject = new VestTest({
+    testObject = VestTest({
       fieldName,
       statement,
       testFn: jest.fn(),
@@ -29,9 +30,8 @@ describe('VestTest', () => {
   });
 
   it('Should have a unique id', () => {
-    Array.from(
-      { length: 100 },
-      () => new VestTest({ fieldName, statement, testFn: jest.fn() })
+    Array.from({ length: 100 }, () =>
+      VestTest({ fieldName, statement, testFn: jest.fn() })
     ).reduce((existing, { id }) => {
       expect(existing[id]).toBeUndefined();
       existing[id] = true;
@@ -53,7 +53,7 @@ describe('VestTest', () => {
       jest.resetModules();
 
       const VestTest = require('VestTest');
-      testObject = new VestTest({
+      testObject = VestTest({
         fieldName,
         statement,
         testFn: jest.fn(),
@@ -64,21 +64,21 @@ describe('VestTest', () => {
       jest.resetAllMocks();
     });
 
-    it('Should set this.failed to true', () => {
-      expect(testObject.failed).toBe(false);
+    it('Should set this.status to FAILED', () => {
+      expect(testObject.status).not.toBe(testStatuses.FAILED);
       testObject.fail();
-      expect(testObject.failed).toBe(true);
+      expect(testObject.status).toBe(testStatuses.FAILED);
     });
   });
 
   describe('testobject.valueOf', () => {
     test('When `failed` is false', () => {
-      expect(testObject.failed).toBe(false);
+      expect(testObject.status).not.toBe(testStatuses.FAILED);
       expect(testObject.valueOf()).toBe(true);
     });
 
     test('When `failed` is true', () => {
-      testObject.failed = true;
+      testObject.status = testStatuses.FAILED;
       expect(testObject.valueOf()).toBe(false);
     });
   });
