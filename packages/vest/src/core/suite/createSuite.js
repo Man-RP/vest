@@ -58,6 +58,31 @@ const createSuite = withArgs(args => {
 
     return produce();
   });
+
+  suite.hasErrors = fieldName => suite.get().hasErrors(fieldName);
+  suite.hasWarnings = fieldName => suite.get().hasWarnings(fieldName);
+
+  suite.getErrors = () => suite.get().getErrors();
+  suite.getErrors = fieldName => suite.get().getErrors(fieldName);
+
+  suite.hasErrorsByGroup = groupName => suite.get().hasErrorsByGroup(groupName);
+  suite.hasErrorsByGroup = (groupName, fieldName) =>
+    suite.get().hasErrorsByGroup(groupName, fieldName);
+
+  suite.hasWarningsByGroup = groupName =>
+    suite.get().hasWarningsByGroup(groupName);
+  suite.hasWarningsByGroup = (groupName, fieldName) =>
+    suite.get().hasWarningsByGroup(groupName, fieldName);
+
+  suite.getErrorsByGroup = groupName => suite.get().getErrorsByGroup(groupName);
+  suite.getErrorsByGroup = (groupName, fieldName) =>
+    suite.get().getErrorsByGroup(groupName, fieldName);
+
+  suite.getWarningsByGroup = groupName =>
+    suite.get().getWarningsByGroup(groupName);
+  suite.getWarningsByGroup = (groupName, fieldName) =>
+    suite.get().getWarningsByGroup(groupName, fieldName);
+
   suite.get = context.bind({ stateRef }, produce, /*isDraft:*/ true);
   suite.reset = state.reset;
   suite.remove = context.bind({ stateRef }, name => {

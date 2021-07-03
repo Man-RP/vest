@@ -173,6 +173,27 @@ interface ISubscribePayload {
 interface ICreateResult {
   (...args: any[]): IVestResult;
   get: () => DraftResult;
+  hasErrors: (fieldName?: string) => boolean;
+
+  hasWarnings: (fieldName?: string) => boolean;
+
+  getErrors(): { [fieldName: string]: string[] };
+  getErrors(fieldName: string): string[];
+
+  getWarnings(): { [fieldName: string]: string[] };
+  getWarnings(fieldName: string): string[];
+
+  hasErrorsByGroup(groupName: string): boolean;
+  hasErrorsByGroup(groupName: string, fieldName: string): boolean;
+
+  hasWarningsByGroup(groupName: string): boolean;
+  hasWarningsByGroup(groupName: string, fieldName: string): boolean;
+
+  getErrorsByGroup(groupName: string): { [fieldName: string]: string[] };
+  getErrorsByGroup(groupName: string, fieldName: string): string[];
+
+  getWarningsByGroup(groupName: string): { [fieldName: string]: string[] };
+  getWarningsByGroup(groupName: string, fieldName: string): string[];
   reset: () => void;
   remove: (fieldName: string) => void;
 
